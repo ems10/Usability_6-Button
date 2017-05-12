@@ -114,7 +114,6 @@ unsigned long tftRunningScreen() {
   tft.print(TheSize);
   tft.print(" mL syringe");
 
-  /*
   // Time remaining
   tft.setFont(&FreeSansBold12pt7b);
   DisplayTime();
@@ -123,16 +122,16 @@ unsigned long tftRunningScreen() {
   tft.print(" hr ");
   tft.print(MinutesLeft);
   tft.print(" min remaining");
-*/
+
 
   // Button instructions
   tft.setFont(&FreeSans12pt7b);
   tft.setTextColor(HX8357_WHITE);
   tft.fillRect(0, 240, 480, 80, HX8357_BLACK);
-  tft.setCursor(15, 270);
-  tft.println("To pause or view menu,");
+  tft.setCursor(10, 270);
+  tft.println("To pause infusion and view menu,");
   tft.setCursor(25, 300);
-  tft.println(" press BACK/PAUSE");
+  tft.println("  press BACK/PAUSE");
   
   logInfusion(_infStart); // Log the starting of the infusion
   tftRunningValueScreen();
@@ -339,7 +338,7 @@ void tftPauseScreen(){
         tft.print(TheRate);
         tft.println(" mL/hr");
   }
-
+  tft.fillRect(0, 66, 300, 400, HX8357_WHITE);
   tft.setTextColor(HX8357_RED);
   
   // Current infused
@@ -350,7 +349,7 @@ void tftPauseScreen(){
 
   // Total to infuse
   tft.setTextSize(1);
-  tft.setTextColor(HX8357_WHITE);
+  tft.setTextColor(HX8357_BLACK);
   tft.setCursor(75, 205);
   tft.print("of ");
   tft.print(PrescribedVol);
@@ -364,9 +363,8 @@ void tftPauseScreen(){
   tft.print(" mL syringe");
   
   // Time remaining
-  tft.setFont(&FreeSansBold12pt7b);
   DisplayTime();
-  tft.setCursor(30, 300);
+  tft.setCursor(35, 300);
   tft.print(HoursLeft);
   tft.print(" hr ");
   tft.print(MinutesLeft);
@@ -377,6 +375,7 @@ void tftPauseScreen(){
   softButtons(3);
 
   // Add labels
+  tft.setTextColor(HX8357_WHITE);
   menuOption(2, 1, ""); // See menuOption() for reason
   menuOption(2, 1, "Resume");
   menuOption(3, 1, "Adjust infusion"); // Allow to resume, adjust, or stop
@@ -425,6 +424,7 @@ void tftAdjustInfusion(){
   tft.setTextSize(2);
   tft.setCursor(0, 40);
   tft.setTextColor(HX8357_WHITE);
+  tft.setFont(&FreeSans12pt7b);
   tft.println(" Are you sure you want to");
   tft.println(" adjust the infusion?");
 
@@ -443,12 +443,12 @@ void tftAdjustInfusion(){
     if (change) {
       change = false;
       switch (key) {
-        case '+': LogKeyPress("2", "No");
+        case '-': LogKeyPress("2", "No, don't adjust infusion");
           tftResume();  // Resume the infusion
           tftRunningScreen();
           flag = true;
           break;
-        case '#': LogKeyPress("3", "Yes, go back to infusion selection");
+        case '+': LogKeyPress("3", "Yes, go back to infusion selection");
           tftResume();
           tftSubMenuInit();
           flag = true; 
@@ -470,6 +470,7 @@ void tftStopInfusion(){
   tft.setTextSize(2);
   tft.setCursor(0, 40);
   tft.setTextColor(HX8357_WHITE);
+  tft.setFont(&FreeSans12pt7b);
   tft.println(" Are you sure you want to");
   tft.println(" stop the infusion?");
 
@@ -488,15 +489,16 @@ void tftStopInfusion(){
     if (change) {
       change = false;
       switch (key) {
-        case '+': LogKeyPress("2", "No");
+        case '-': LogKeyPress("2", "No, don't stop infusion");
           tftResume();  // Resume the infusion
           tftRunningScreen();
           flag = true;
           break;
-        case '#': LogKeyPress("3", "Yes, go back to main screen");
+        case '+': LogKeyPress("3", "Yes, go back to main screen");
           logInfusion(_infStop);
           tftResume();
           ResetInfusion();
+          tftMenuInit();
           flag = true; 
           break;
       }
@@ -550,7 +552,7 @@ void tftInfusionComplete() {
   tft.drawRect(0, 0, 480, 65, HX8357_BLACK);
   tft.fillRect(0, 0, 480, 64, HX8357_BLUE);
   tft.setTextSize(2);
-  tft.setCursor(95, 45);
+  tft.setCursor(60, 45);
   tft.setTextColor(HX8357_WHITE);
   tft.print("Infusion Complete");
 
@@ -559,11 +561,11 @@ void tftInfusionComplete() {
   tft.setTextColor(HX8357_BLACK);
   tft.setCursor(155, 115);
   tft.print("Mode:");
-  tft.setCursor(122, 145);
+  tft.setCursor(125, 145);
   tft.print("Delivery:");
-  tft.setCursor(62, 175);
+  tft.setCursor(65, 175);
   tft.print("Syringe Type:");
-  tft.setCursor(3, 205);
+  tft.setCursor(40, 205);
   tft.print("Volume Infused:");
   tft.setFont(&FreeSans12pt7b);
 
@@ -595,24 +597,31 @@ void tftInfusionComplete() {
   tft.print(PrescribedVol);
   tft.print(" mL");
 
-  
-
-
   // Button instructions
   tft.setTextColor(HX8357_WHITE);
-  tft.fillRect(0, 240, 480, 80, HX8357_BLACK);
+  tft.fillRect(0, 240, 238, 80, HX8357_BLACK);
   tft.setCursor(15, 275);
-  tft.println("To return to Infusion");
+  tft.println("To finish treatment");
   tft.println(" press BACK/PAUSE");
-  
-  while (true) {
+  tft.fillRect(242, 240, 238, 80, HX8357_BLACK);
+  tft.setCursor(255, 275);
+  tft.println("To start new infusion");
+  tft.setCursor(310, 305);
+  tft.print("press OK");
+
+    while (true) {
     char key = keypad.getKey();
     bool flag = false;
-
+    
     if (change) {
       change = false;
       switch (key) {
-        case 'B': LogKeyPress("B", "");
+        case 'K': LogKeyPress("OK", "Set up new infusion");
+          tftSubMenuInit();
+          break;
+
+        case 'B': LogKeyPress("Back", "Finish treatment");
+          tftMenuInit();
           flag = true;
           break;
       }
@@ -623,6 +632,7 @@ void tftInfusionComplete() {
     }
   }
 }
+
 
 
 void tftBatteryScreen()

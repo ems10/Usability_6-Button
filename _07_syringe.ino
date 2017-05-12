@@ -10,6 +10,7 @@
 void tftMgSO4Brand()
 {
   // New menu construction with soft buttons
+  tft.setFont(&FreeSans12pt7b);
   tft.setTextWrap(false);
   tft.fillScreen(HX8357_BLACK);
   tft.setTextSize(2);
@@ -76,6 +77,7 @@ void tftMgSO4Size() {
 void tftMgSO4Size1()
 {
   // New menu construction with soft buttons
+  tft.setFont(&FreeSans12pt7b);
   tft.setTextWrap(false);
   tft.fillScreen(HX8357_BLACK);
   tft.setTextSize(2);
@@ -138,6 +140,7 @@ void tftMgSO4Size1()
 void tftMgSO4Size2()
 {
   // New menu construction with soft buttons
+  tft.setFont(&FreeSans12pt7b);  
   tft.setTextWrap(false);
   tft.fillScreen(HX8357_BLACK);
   tft.setTextSize(2);
@@ -200,6 +203,7 @@ void tftMgSO4Size2()
 void tftMgSO4Size3()
 {
   // New menu construction with soft buttons
+  tft.setFont(&FreeSans12pt7b);
   tft.setTextWrap(false);
   tft.fillScreen(HX8357_BLACK);
   tft.setTextSize(2);
@@ -253,6 +257,7 @@ void tftMgSO4Total()
   TotalVolume = TheSize;
 
   // New menu construction with soft buttons
+  tft.setFont(&FreeSans12pt7b);
   tft.setTextWrap(false);
   tft.fillScreen(HX8357_BLACK);
   tft.setTextSize(2);
@@ -280,10 +285,10 @@ void tftMgSO4Total()
   menuOption(4, 1, "-5 mL");
   
  // Instructions
-  tft.setTextColor(HX8357_BLUE);
+  tft.setTextColor(HX8357_WHITE);
   tft.setTextSize(1);
   tft.setCursor(80, 240);
-  tft.println(" Adjust volume by adding (+)");
+  tft.println(" Adjust amount by adding (+)");
   tft.setCursor(80, 270);
   tft.println("    or subtracting (-) mL");
   tft.setCursor(80, 300);
@@ -358,6 +363,7 @@ void tftMgSO4Total()
 //_____________________Check volume to infuse_________________________
 void tftMgSO4VolCheck() {
   // New menu construction with soft buttons
+  tft.setFont(&FreeSans12pt7b); 
   tft.setTextWrap(false);
   tft.fillScreen(HX8357_BLACK);
   tft.setTextSize(2);
@@ -409,8 +415,20 @@ void tftMgSO4VolCheck() {
           flag = true;
           break;
 
+        case 'K': PrescribedVol = TotalVolume;
+          LogKeyPress("2", opt1);
+          tftMgSO4Verify();
+          flag = true;
+          break;
+
         case 'B': LogKeyPress("Back", "");
+          if (!MgSO4){ 
+            tftManualFlow1();
+          }
+          else {
+          tftMgSO4VolCheck();
           tftMgSO4Total();
+          }
           flag = true;
           break;
       }
@@ -429,13 +447,14 @@ void tftMgSO4Prescribed()
   PrescribedVol = TotalVolume;
 
   // New menu construction with soft buttons
+  tft.setFont(&FreeSans12pt7b);
   tft.setTextWrap(false);
   tft.fillScreen(HX8357_BLACK);
   tft.setTextSize(2);
   tft.setCursor(0, 40);
   tft.setTextColor(HX8357_WHITE);
-  tft.println(" Select Volume");
-  tft.println(" to Infuse");
+  tft.println(" Select Amount of");
+  tft.println(" Fluid to Infuse");
 
   // Draw the triangles
   softButtons(4);
@@ -456,10 +475,10 @@ void tftMgSO4Prescribed()
   tft.print(" mL");
 
  // Instructions
-  tft.setTextColor(HX8357_BLUE);
+  tft.setTextColor(HX8357_WHITE);
   tft.setTextSize(1);
   tft.setCursor(80, 240);
-  tft.println(" Adjust volume by adding (+)");
+  tft.println(" Adjust amount by adding (+)");
   tft.setCursor(80, 270);
   tft.println("    or subtracting (-) mL");
   tft.setCursor(80, 300);
@@ -496,6 +515,7 @@ void tftMgSO4Prescribed()
         
         case 'K': 
           LogKeyPress("OK", "");
+          TotalVolume==PrescribedVol; //CHANGED
           tftMgSO4Verify();
           flag = true;
           break;
@@ -535,6 +555,7 @@ void tftMgSO4Prescribed()
 void tftManualFlow1()
 {
   // New menu construction with soft buttons
+  tft.setFont(&FreeSans12pt7b);
   tft.setTextWrap(false);
   tft.fillScreen(HX8357_BLACK);
   tft.setTextSize(2);
@@ -561,7 +582,7 @@ void tftManualFlow1()
   tft.print(" mL/hr");
 
  // Instructions
-  tft.setTextColor(HX8357_BLUE);
+  tft.setTextColor(HX8357_WHITE);
   tft.setTextSize(1);
   tft.setCursor(60, 240);
   tft.println(" Adjust rate by adding (+)");
@@ -600,7 +621,7 @@ void tftManualFlow1()
         
         case 'K': 
           LogKeyPress("OK", "");
-          tftMgSO4Prescribed(); //CHECK
+          tftMgSO4VolCheck();
           flag = true;
           break;
 
@@ -638,101 +659,10 @@ void tftManualFlow1()
   }
 }
 
-
-/*
-//_____________________(Manual) Flow Rate_________________________
-void tftManualFlow1()
-{
-  // New menu construction with soft buttons
-  tft.setTextWrap(false);
-  tft.fillScreen(HX8357_BLACK);
-  tft.setTextSize(2);
-  tft.setCursor(0, 40);
-  tft.setTextColor(HX8357_WHITE);
-  tft.println(" Select Flow");
-  tft.println(" Rate");
-
-  // So we don't have multiple functions for the cycling
-  bool firstRates = true;
-  bool more = false;
-  char *ratesText1[3] = {"120 mL/hr", " 60 mL/hr", " 30 mL/hr"};
-  char *ratesText2[3] = {" 10 mL/hr", "  5 mL/hr", "  1 mL/hr"};
-  int rates1[3] = {120, 60, 30};
-  int rates2[3] = {10, 5, 1};
-  char *ratesText[3] = {"120 mL/hr", " 60 mL/hr", " 30 mL/hr"}; // Holder for current texts
-  int rates[3] = {120, 60, 30}; // Holder for current texts
-  
-  // Draw the triangles
-  softButtons(4);
-
-  // Add labels
-  menuOption(1, 1, ""); // See menuOption() for reason
-  menuOption(1, 1, ratesText[0]);
-  menuOption(2, 1, ratesText[1]);
-  menuOption(3, 1, ratesText[2]);
-  menuOption(4, 1, "More rates");
-
-  while (true) {
-    char key = keypad.getKey();
-    bool flag = false;
-
-    if (more) {
-      more = false;
-      firstRates = !firstRates; // Swap rates text & numbers
-      if (firstRates){
-        for (int i = 0; i < 3; i++){
-          ratesText[i] = ratesText1[i];
-          rates[i] = rates1[i];
-        }
-      } else {
-        for (int i = 0; i < 3; i++){
-          ratesText[i] = ratesText2[i];
-          rates[i] = rates2[i];
-        }
-      }
-      // Changes menu options
-      menuOption(1, 1, ratesText[0]);
-      menuOption(2, 1, ratesText[1]);
-      menuOption(3, 1, ratesText[2]);
-    }
-
-    if (change) {
-      change = false;
-      switch (key) {
-        case '*': TheRate = rates[0];
-          flag = true;
-          LogKeyPress("1", String(ratesText[0]));
-          break;
-        case '-': TheRate = rates[1];
-          flag = true;
-          LogKeyPress("2", String(ratesText[1]));
-          break;
-
-        case '+': TheRate = rates[2];
-          flag = true;
-          LogKeyPress("3", String(ratesText[2]));
-          break;
-
-        case '#': more = true;
-          LogKeyPress("4", "More rates");
-          break;
-
-        case 'B': LogKeyPress("Back", "");
-          flag = true;
-          tftMgSO4Total();
-          break;
-      }
-    }
-
-    if (flag) {
-      break;
-    }
-  }
-}
-*/
 //___________________Final Info Check_________________________________
 void tftMgSO4Verify()
 {
+  tft.setFont(&FreeSans12pt7b);
   tft.setTextWrap(false);
   tft.fillScreen(HX8357_WHITE);
   tft.drawRect(0, 0, 480, 65, HX8357_BLACK);
@@ -813,11 +743,11 @@ void tftMgSO4Verify()
     if (change) {
       change = false;
       switch (key) {
-        case 'K': LogKeyPress("K", "");
+        case 'K': LogKeyPress("OK", "Start infusion");
           tftStartInfusion();
           break;
 
-        case 'B': LogKeyPress("B", "");
+        case 'B': LogKeyPress("Back", "Change settings");
           tftMgSO4Prescribed();
           flag = true;
           break;

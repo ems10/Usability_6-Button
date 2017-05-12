@@ -165,6 +165,7 @@ void menuOption(int loc, int textSize, char* text)
 void tftMenuInit()
 {
   // New menu construction with soft buttons
+  tft.setFont(&FreeSans12pt7b);
   tft.setTextWrap(false);
   tft.fillScreen(HX8357_BLACK);
   tft.setTextSize(2);
@@ -271,6 +272,21 @@ void tftAlarmsSet() {
   tft.setTextColor(HX8357_WHITE);
   tft.println(" Device will sound all alarms.");
 
+  tft.drawRect(240, 239, 238, 80, HX8357_BLACK);
+  // Button instructions
+  tft.setTextColor(HX8357_BLACK);
+  tft.setFont(&FreeSans12pt7b);
+  tft.setTextSize(1);
+  tft.fillRect(0, 240, 238, 80, HX8357_WHITE);
+  tft.setCursor(20, 275);
+  tft.println("To review options");
+  tft.println(" press BACK/PAUSE");
+  tft.fillRect(242, 240, 238, 80, HX8357_WHITE);
+  tft.setCursor(265, 275);
+  tft.println("To confirm change");
+  tft.setCursor(310, 305);
+  tft.print("press OK");
+
 
   BuzzerOn = true;    // Set the buzzer on
 
@@ -281,10 +297,12 @@ void tftAlarmsSet() {
     if (change) {
       change = false;
       switch (key) {
-        case 'B': LogKeyPress("Back", "Return to Pump Setup");
+        case 'B': LogKeyPress("Back", "Return to Alarm Settings");
+          tftAlarmSettings();
           flag = true;
           break;
         case 'K': LogKeyPress("Back", "Return to Pump Setup");
+          tftMenuInit();
           flag = true;
           break;
       }
@@ -306,6 +324,21 @@ void tftAlarmsMute() {
   tft.setTextColor(HX8357_WHITE);
   tft.println(" All alarms are muted.");
 
+  tft.drawRect(240, 239, 238, 80, HX8357_BLACK);
+  // Button instructions
+  tft.setTextColor(HX8357_BLACK);
+  tft.setFont(&FreeSans12pt7b);
+  tft.setTextSize(1);
+  tft.fillRect(0, 240, 238, 80, HX8357_WHITE);
+  tft.setCursor(20, 275);
+  tft.println("To review options");
+  tft.println(" press BACK/PAUSE");
+  tft.fillRect(242, 240, 238, 80, HX8357_WHITE);
+  tft.setCursor(265, 275);
+  tft.println("To confirm change");
+  tft.setCursor(310, 305);
+  tft.print("press OK");
+
   BuzzerOn = false;    // Set the buzzer off
 
   while (true) {
@@ -315,10 +348,12 @@ void tftAlarmsMute() {
     if (change) {
       change = false;
       switch (key) {
-        case 'B': LogKeyPress("Back", "Return to Pump Setup");
+        case 'B': LogKeyPress("Back", "Return to Alarm Settings");
+          tftAlarmSettings();
           flag = true;
           break;
-        case 'K': LogKeyPress("Back", "Return to Pump Setup");
+        case 'K': LogKeyPress("OK", "Return to Pump Setup");
+          tftMenuInit();
           flag = true;
           break;
       }
@@ -359,12 +394,12 @@ void tftOcclusionSettings() {
     if (change) {
       change = false;
       switch (key) {
-        case '-': LogKeyPress("3", "Adult threshold (8 psi)");
+        case '-': LogKeyPress("2", "Adult threshold (8 psi)");
           tftAdultOcclusion();
           flag = true;
           break;
 
-        case '+': LogKeyPress("4", "Child threshold (5 psi)");
+        case '+': LogKeyPress("3", "Child threshold (5 psi)");
           tftChildOcclusion();
           flag = true;
           break;
@@ -394,6 +429,21 @@ void tftAdultOcclusion() {
   tft.println(" threshold (8 psi)'");
 
 
+  tft.drawRect(240, 239, 238, 80, HX8357_BLACK);
+  // Button instructions
+  tft.setTextColor(HX8357_BLACK);
+  tft.setFont(&FreeSans12pt7b);
+  tft.setTextSize(1);
+  tft.fillRect(0, 240, 238, 80, HX8357_WHITE);
+  tft.setCursor(20, 275);
+  tft.println("To review options");
+  tft.println(" press BACK/PAUSE");
+  tft.fillRect(242, 240, 238, 80, HX8357_WHITE);
+  tft.setCursor(265, 275);
+  tft.println("To confirm change");
+  tft.setCursor(310, 305);
+  tft.print("press OK");
+
 
   for (int i = 0; i < 6; ++i)
   {
@@ -408,10 +458,12 @@ void tftAdultOcclusion() {
     if (change) {
       change = false;
       switch (key) {
-        case 'B': LogKeyPress("Back", "Return to Pump Setup");
+        case 'B': LogKeyPress("Back", "Return to Occlusion Settings");
+          tftOcclusionSettings();
           flag = true;
           break;
-        case 'K': LogKeyPress("Back", "Return to Pump Setup");
+        case 'K': LogKeyPress("OK", "Return to Pump Setup");
+          tftMenuInit();
           flag = true;
           break;
       }
@@ -434,6 +486,21 @@ void tftChildOcclusion() {
   tft.println(" Occlusion threshold has");
   tft.println(" been changed to 'Child");
   tft.println(" threshold (5 psi)'");
+ 
+  tft.drawRect(240, 239, 238, 80, HX8357_BLACK);
+  // Button instructions
+  tft.setTextColor(HX8357_BLACK);
+  tft.setFont(&FreeSans12pt7b);
+  tft.setTextSize(1);
+  tft.fillRect(0, 240, 238, 80, HX8357_WHITE);
+  tft.setCursor(20, 275);
+  tft.println("To review options");
+  tft.println(" press BACK/PAUSE");
+  tft.fillRect(242, 240, 238, 80, HX8357_WHITE);
+  tft.setCursor(265, 275);
+  tft.println("To confirm change");
+  tft.setCursor(310, 305);
+  tft.print("press OK");
 
 
   for (int i = 0; i < 6; ++i)
@@ -449,10 +516,12 @@ void tftChildOcclusion() {
     if (change) {
       change = false;
       switch (key) {
-        case 'B': LogKeyPress("Back", "Return to Pump Setup");
+        case 'B': LogKeyPress("Back", "Return to Occlusion Settings");
+          tftOcclusionSettings();
           flag = true;
           break;
-        case 'K': LogKeyPress("Back", "Return to Pump Setup");
+        case 'K': LogKeyPress("OK", "Return to Pump Setup");
+          tftMenuInit();
           flag = true;
           break;
       }
@@ -484,109 +553,9 @@ void submenu() {
 
 }
 
-//__________________________________________________________________________________________________
-//Function inside MgSO4 to remind nurses about concentration
 
-void MgSO4Reminders() { // TODO Remove?
-  if (Maintenance == false) {
-    tft.fillScreen(HX8357_WHITE);
-    tftLoadingRemind();                           // Reminder Screen for Loading dose
-  }
-  else
-  { tft.fillScreen(HX8357_WHITE);
-    tftMaintenanceRemind();
-  }                       // Reminder Screen for maintenance dose
-}
 
-//__________________________________________________________________________________________________
-//Reminder Screen for loading
-int tftLoadingRemind() // TODO Remove?
-{
-  KeyEvent = KeyControl();
-  tft.setCursor(0, 100);
-  tft.setTextColor(HX8357_BLACK);
-  tft.setTextSize(2);
-  tft.println(" Loading dose ");
-  tft.setCursor(0, 150);
-  tft.println("     with ");
-  tft.setCursor(0, 200);
-  tft.println(" 4g of MgSO4? ");
-  tft.setCursor(150, 280);
-  tft.println(" (OK) ");
 
-  if (KeyEvent != SelectKey)
-  {
-    tftLoadingRemind();
-  }
-}
-
-//__________________________________________________________________________________________________
-//Reminder Screen for maintenance dose
-int tftMaintenanceRemind() // TODO Remove?
-{
-  KeyEvent = KeyControl();
-  tft.setCursor(0, 50);
-  tft.setTextColor(HX8357_BLACK);
-  tft.setTextSize(2);
-  tft.println(" Maintenance ");
-  tft.setCursor(0, 100);
-  tft.println(" dose loaded ");
-  tft.setCursor(0, 150);
-  tft.println(" with ");
-  tft.setCursor(0, 200);
-  tft.println(" 20% MgSO4? ");
-  tft.setCursor(150, 280);
-  tft.println(" (OK) ");
-
-  if (KeyEvent != SelectKey)
-  {
-    tftMaintenanceRemind();
-  }
-}
-
-//__________________________________________________________________________________________________
-//Reminder Screen1
-int tftPLS() // TODO Remove?
-{
-  KeyEvent = KeyControl();
-  tft.setCursor(0, 100);
-  tft.setTextColor(HX8357_BLACK);
-  tft.setTextSize(2);
-  tft.println("  Pull back ");
-  tft.setCursor(0, 150);
-  tft.println("    and ");
-  tft.setCursor(0, 200);
-  tft.println(" load syringe ");
-  tft.setCursor(150, 280);
-  tft.println(" (OK) ");
-
-  if (KeyEvent != SelectKey)
-  {
-    tftPLS();
-  }
-}
-
-//__________________________________________________________________________________________________
-//Reminder Screen2
-int tftPL() // TODO Remove?
-{
-  KeyEvent = KeyControl();
-  tft.setCursor(50, 100);
-  tft.setTextColor(HX8357_BLACK);
-  tft.setTextSize(2);
-  tft.println(" Prime ");
-  tft.setCursor(65, 150);
-  tft.println(" IV ");
-  tft.setCursor(50, 200);
-  tft.println(" line ");
-  tft.setCursor(150, 280);
-  tft.println(" (OK) ");
-
-  if (KeyEvent != SelectKey)
-  {
-    tftPL();
-  }
-}
 
 //________________________________________________________________________________________________
 // Clear screen and display the menu for modes in Infusion Settings
@@ -716,14 +685,14 @@ void tftOcclusionAlarmScreen()
     if (change) {
       change = false;
       switch (key) {
-        case 'K': LogKeyPress("K", "Resume infusion");
+        case 'K': LogKeyPress("OK", "Resume infusion");
           tft.setFont(&FreeSans12pt7b);
           tftResume();
           tftRunningScreen();
           flag = true;
           break;
 
-        case 'B': LogKeyPress("B", "Quit infusion");
+        case 'B': LogKeyPress("Back", "Quit infusion");
           tft.setFont(&FreeSans12pt7b);
           tftMenuInit();
           flag = true;
@@ -737,66 +706,7 @@ void tftOcclusionAlarmScreen()
   }
 }
 
-
-  
-  //OLD CODE
-  /*
-  // New menu construction with soft buttons
-  tft.setTextWrap(false);
-  tft.fillScreen(HX8357_BLACK);
-  tft.setFont(&FreeSans9pt7b);
-  tft.setTextSize(2);
-  tft.setCursor(0, 40);
-  tft.setTextColor(HX8357_RED);
-  tft.println(" OCCLUSION DETECTED");
-  tft.println(" Check patient and IV line");
-  tft.setTextColor(HX8357_WHITE);
-  
-  // Draw the triangles
-  softButtons(2);
-
-  // Add labels
-  menuOption(3, 1, ""); // See menuOption() for reason
-  //menuOption(1, 1, "Mute alarm"); USABILITY TEST...TOOK OUT MUTE ALARM OPTION
-  menuOption(2, 1, "Resume infusion");
-  menuOption(3, 1, "Quit infusion");
-
-  while (true) {
-    char key = keypad.getKey();
-    bool flag = false;
-
-    if (change) {
-      change = false;
-      switch (key) {
-//        case '-': LogKeyPress("1", "Mute alarm");
-//          tft.setFont(&FreeSans12pt7b);
-//          tftMuteAlarm();
- //         flag = true;
-//          break;
-
-        case '+': LogKeyPress("2", "Resume infusion");
-          tft.setFont(&FreeSans12pt7b);
-          tftResume();
-          tftRunningScreen();
-          flag = true;
-          break;
-
-        case '#': LogKeyPress("3", "Quit infusion");
-          tft.setFont(&FreeSans12pt7b);
-          tftMenuInit();
-          flag = true;
-          break;
-      }
-    }
-
-    if (flag) {
-      break;
-    }
-  }
-}
-
-*/
-
+/*MAYBE DELETE
 // Mute Alarm and return to previous menu
 void tftMuteAlarm(){
    digitalWrite(38, LOW); // Set to high to turn alarm back on
@@ -834,7 +744,7 @@ void tftMuteAlarm(){
   }
    
 }
-
+*/
 //_______________________________________________________________________
 
 //Fuction for displaying the Low Battery Screen and calling the condition screen at the bottom
@@ -975,17 +885,17 @@ void tftMgSO4Check()
     if (change) {
       change = false;
       switch (key) {
-        case '-': LogKeyPress("2", "Yes");
+        case '-': LogKeyPress("2", "Yes, syringe loaded w/ 20%");
           tftMgSO4Dose();
           flag = true;
           break;
 
-        case '+': LogKeyPress("3", "No");
+        case '+': LogKeyPress("3", "No, syringe not loaded w/ 20%");
           tftMgSO4Fill();
           flag = true;
           break;
 
-        case 'B': LogKeyPress("4", "Back to mode selection");
+        case 'B': LogKeyPress("Back", "Back to mode selection");
           tftSubMenuInit();
           flag = true;
           break;
@@ -1036,7 +946,7 @@ void tftMgSO4Fill() {
           flag = true;
           break;
 
-        case 'B': LogKeyPress("4", "Back to mode selection");
+        case 'B': LogKeyPress("Back", "Back to mode selection");
           tftMgSO4Mode();
           flag = true;
           break;

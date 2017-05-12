@@ -6,7 +6,7 @@
 //#include <Adafruit_ILI9340.h> // Hardware-specific library, Smaller screen
 #include <Fonts/FreeSans9pt7b.h> // Sans-Serif font for small-text screens
 #include <Fonts/FreeSans12pt7b.h> // Sans-Serif font for large-text screens
-#include <Fonts/FreeSansBold12pt7b.h> // Bold Sans-Serif for when bold is needed
+#include <Fonts/FreeSansBold12pt7b.h> // Bold Safreens-Serif for when bold is needed
 #include <SPI.h>
 
 // BEGIN CARD READING

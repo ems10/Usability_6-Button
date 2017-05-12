@@ -41,28 +41,7 @@ void LogKeyPress(String button, String option)
 
 
 
-// ______________________________________________________________________
-// FUNCTION KeyControl
-// Serves to control the key detection rates. TODO Remove?
-int KeyControl()
-{
-  if (millis() - KeyControlTime >= KeyControlThreshold)
-  {
-    KeyControlTime = millis();
-    KeyEvent = GetKey();
-    if (KeyEvent != NoKey)
-      KeyControlThreshold = KeyPressRefresh;
-    else
-      KeyControlThreshold = KeyNormalRefresh;
-  }
-  else
-  {
-    KeyEvent = NoKey;
-  }
-  return KeyEvent;
-}
 
-//________________________________________________________________________
 
 
 void KeyPress(KeypadEvent key) {
@@ -72,67 +51,5 @@ void KeyPress(KeypadEvent key) {
 }
 
 
-
-//________________________________________________________________________
-
-int GetKeyOld() // TODO Remove?
-{
-  KeyADC = analogRead(0);
-  KeyEvent = CategorizeKey(KeyADC);
-  LastKey = KeyEvent;
-  return KeyEvent;
-}
-
-
-int GetKey() // TODO Remove?
-{
-  char key = keypad.getKey();
-  switch (key) {
-    case '>':
-      KeyEvent = RightKey;
-      break;
-    case '^':
-      KeyEvent = UpKey;
-      break;
-    case '<':
-      KeyEvent = LeftKey;
-      break;
-    case 'v':
-      KeyEvent = DownKey;
-      break;
-    case 'E':
-      KeyEvent = SelectKey;
-      break;
-    default:
-      KeyEvent = NoKey;
-  }
-  LastKey = KeyEvent;
-
-  return KeyEvent;
-}
-
-
-// ______________________________________________________________________
-// FUNCTION CategorizeKey TODO Remove?
-// This categorizes the input ADC value into a usable key value.
-int CategorizeKey(int KeyADC)
-{
-  if ( KeyADC <= 688)
-    KeyEvent = RightKey;
-  if (KeyADC >= UpKeyADCLower && KeyADC <= UpKeyADCUpper)
-    KeyEvent = UpKey;
-  else if (KeyADC >= LeftKeyADCLower && KeyADC <= LeftKeyADCUpper)
-    KeyEvent = LeftKey;
-  else if (KeyADC >= SelectKeyADCLower && KeyADC <= SelectKeyADCUpper)
-    KeyEvent = SelectKey;
-  else if (KeyADC >= DownKeyADCLower && KeyADC <= DownKeyADCUpper)
-    KeyEvent = DownKey;
-  else if  (KeyADC >= 678 && KeyADC <= 688)
-    KeyEvent = RightKey;
-  else
-    KeyEvent = NoKey;
-
-  return KeyEvent;
-}
 
 

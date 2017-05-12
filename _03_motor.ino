@@ -57,9 +57,6 @@ void ProtocolRun()
   // tft.println(SoftPotVolume);
   MotorLoop();
 
-  //Display Total Time Left
-//  DisplayTime();
-
   if (HoursLeft >= 0) { //only positive times are displayed on LCD screen
     DisplayTime();
     if (CurrMinutesLeft != MinutesLeft){
@@ -208,12 +205,10 @@ void tftStartInfusion(void)
     CurrentMotorTickMax = CurrentProtocolTime / MotorPulse; // calculates total number of current protocol motor ticks
 
     //MgSO4 vs. Manual and LD vs. MD
-    if (Maintenance == true) {
-      ProtocolTime = 86400000;
-    }//24 hr protocol for maintenance dose
-    else {
-      ProtocolTime = ((double)TotalVolume / (double)TheRate) * 3600000;
-    } // calculates total protocol run time in milliseconds
+
+
+      ProtocolTime = ((double)PrescribedVol / (double)TheRate) * 3600000;
+     // calculates total protocol run time in milliseconds
 
     RefillNumber = ((double)TotalVolume / (double)TheSize); //counts number of refills
     RefillRounding(); //rounds up number to include partial refills
@@ -223,9 +218,6 @@ void tftStartInfusion(void)
     MotorTickMax = round (MotorTickMaxCalc); //Rounds number to int
     ActualRefillTicks = ((double)MotorTickMax / (double)RefillNumber); //untruncated number of ticks/refill
     MotorPulse = MotorPulse - MotorDelay; // Correct MotorPulse to include duration of motor tick (992 milliseconds), add additional delays 1.136
-
-    DispTime = 0;
-    DispStartTime = millis();
 
     Serial.println(MotorPulse);
     Serial.println(MotorTickMax);
@@ -255,7 +247,10 @@ void tftStartInfusion(void)
     Serial.println(); // sets up data acquisition
 
     SoftPotUpdate(CurrentMotorTick);
-
+    
+    DispTime = 0;
+    DispStartTime = millis();
+    
     Buzzer(1);
     if (MgSO4) {
       //MgSO4Reminders(); //check that LD or MD concentration in syringe and IV bag
